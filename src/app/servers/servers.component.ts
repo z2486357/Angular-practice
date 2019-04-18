@@ -1,38 +1,25 @@
 import { Component, OnInit } from '@angular/core';
+import { ServersService } from './servers.service';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
-  //selector: '[app-servers]',
-  //selector: '.app-servers',
-  selector:'app-servers',
-  //template: `
-  //<app-server></app-server>
-  //<app-server></app-server>`,
-  templateUrl:'./servers.component.html',
+  selector: 'app-servers',
+  templateUrl: './servers.component.html',
   styleUrls: ['./servers.component.css']
 })
 export class ServersComponent implements OnInit {
-  allowNewServer=false;
-  serverCreationStatus='NO server was createred';
-  serverName='Testserver';
-  serverCreated=false;
-  servers =['Testserver', 'Testserver 2']
+  private servers: {id: number, name: string, status: string}[] = [];
 
-  constructor() {
-    setTimeout(() => {
-      this.allowNewServer=true;
-    },2000);
-   }
+  constructor(private serversService: ServersService,
+              private router:Router,
+              private route:ActivatedRoute) { }
 
   ngOnInit() {
+    this.servers = this.serversService.getServers();
   }
 
-  onCreateServer(){
-    this.serverCreated=true;
-    this.servers.push(this.serverName)
-    this.serverCreationStatus='Server was created. Name is '+this.serverName;
+  onReload(){
+    // this.router.navigate(['/servers'],{relativeTo:this.route})
   }
 
-  onUpdateServerName(event: Event){
-    this.serverName=(<HTMLInputElement>event.target).value;
-  }
 }
