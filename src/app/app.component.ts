@@ -1,25 +1,61 @@
-import { Component, OnInit } from '@angular/core';
-import { UserService } from './user.service';
+import { Component, ViewChild } from '@angular/core';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent implements OnInit {
-  user1Activated=false
-  user2Activated=false
+export class AppComponent {
+  @ViewChild('f') signupForm: NgForm;
+  genders = ['male', 'female'];
+  user = {
+    username: '',
+    email: '',
+    secret: '',
+    questionAnswer: '',
+    gender:'',
+  }
+  submitted = false;
 
-  constructor(private userservice:UserService){}
-  ngOnInit(){
-    this.userservice.userActivated.subscribe(
-      (id:number)=>{
-        if (id===1){
-          this.user1Activated=true
-        } else if(id===2){
-          this.user2Activated=true 
-        }
+  suggestUserName() {
+    const suggestedName = 'Superuser';
+    //this.signupForm.setValue({
+    //  userData: {
+    //    username: suggestedName,
+    //    email:''
+    //  },
+    //  secret: 'pet',
+    //  questionAnswer: '',
+    //  gender:'male',
+    //})
+    this.signupForm.form.patchValue({
+      userData: {
+        username:suggestedName,
       }
-    )
+    })
+  }
+
+  //onSubmit(form: NgForm) {
+  //  console.log(form)
+  //  //console.log(form.value.username)
+  //  //console.log(form.value.email)
+  //  //console.log(form.value.secret)
+  //}
+
+  onSubmit() {
+    this.user.username = this.signupForm.value.userData.username;
+    this.user.email = this.signupForm.value.userData.email;
+    this.user.secret = this.signupForm.value.secret;
+    this.user.questionAnswer = this.signupForm.value.questionAnswer;
+    this.user.gender = this.signupForm.value.gender;
+    this.submitted = true;
+
+    this.signupForm.reset();
+    this.signupForm.form.patchValue({
+      userData: {
+        email: 'hahaha@test.com',
+      }
+    })
   }
 }
