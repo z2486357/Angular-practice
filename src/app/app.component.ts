@@ -1,61 +1,40 @@
-import { Component, ViewChild } from '@angular/core';
-import { NgForm } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { FormGroup, FormControl, Validators, FormArray } from '@angular/forms';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
-  @ViewChild('f') signupForm: NgForm;
+export class AppComponent implements OnInit{
   genders = ['male', 'female'];
-  user = {
-    username: '',
-    email: '',
-    secret: '',
-    questionAnswer: '',
-    gender:'',
-  }
-  submitted = false;
+  signupForm: FormGroup;
+  forbiddenUsernames = ['Chris', 'Anna'];
 
-  suggestUserName() {
-    const suggestedName = 'Superuser';
-    //this.signupForm.setValue({
-    //  userData: {
-    //    username: suggestedName,
-    //    email:''
-    //  },
-    //  secret: 'pet',
-    //  questionAnswer: '',
-    //  gender:'male',
-    //})
-    this.signupForm.form.patchValue({
-      userData: {
-        username:suggestedName,
-      }
-    })
+  ngOnInit() {
+    this.signupForm = new FormGroup({
+      userData: new FormGroup({
+        username: new FormControl(null,[Validators.required,this.forbiddenNames.bind(this)]),
+        email: new FormControl('xxx@gmail.com',[Validators.required,Validators.email]),
+      }),
+      gender: new FormControl('male'),
+      hobbies:new FormArray([])
+    });
   }
 
-  //onSubmit(form: NgForm) {
-  //  console.log(form)
-  //  //console.log(form.value.username)
-  //  //console.log(form.value.email)
-  //  //console.log(form.value.secret)
-  //}
+  submit() {
+    console.log(this.signupForm)
+  }
 
-  onSubmit() {
-    this.user.username = this.signupForm.value.userData.username;
-    this.user.email = this.signupForm.value.userData.email;
-    this.user.secret = this.signupForm.value.secret;
-    this.user.questionAnswer = this.signupForm.value.questionAnswer;
-    this.user.gender = this.signupForm.value.gender;
-    this.submitted = true;
+  AddHobby() {
+    const control = new FormControl(null, Validators.required);
+    (<FormArray>this.signupForm.get('hobbies')).push(control);
+  }
 
-    this.signupForm.reset();
-    this.signupForm.form.patchValue({
-      userData: {
-        email: 'hahaha@test.com',
-      }
-    })
+  forbiddenNames(control: FormControl): { [s: string]: boolean } {
+    if (this.forbiddenUsernames.indexOf(control.value) !==-1) {
+      return {'nameIsForbidden':true}
+    } 
+    return null;
   }
 }

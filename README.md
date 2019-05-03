@@ -1,6 +1,4 @@
-# Angular-Practice
-
-This is the record of the couse.
+# MyFirstApp
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 6.0.0.
 
