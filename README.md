@@ -1,6 +1,4 @@
-# Angular Practice
-
-This is the record of the course of Angular
+# MyFirstApp
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 6.0.0.
 
