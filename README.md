@@ -1,5 +1,5 @@
 # MyFirstApp
-This is a record of a course
+This is a record of a course.
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 6.0.0.
 
